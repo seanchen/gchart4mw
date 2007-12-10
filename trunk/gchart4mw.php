@@ -135,9 +135,24 @@ function gfInputParseCSVLine ( $args, $input) {
 	    break;
 	}
   }
-  
+
   $lines = explode ("\n",$input); 
+  foreach($lines as $line) {
+    if ($line != "") {
+      $data[] = $line;
+      if (($min >= $line) || ($min == "")) $min = $line;
+      if ($max <= $data) $max = $line;
+    }
+  }
   
+  foreach ($data as $field) {
+    $value = round(($field-$min) / ($max-$min) * 100,0);
+    if ($value > 100) $value = -1;
+    if ($rslt != "") $rslt = $rslt . ",";
+    $rslt = $rslt . $value;	
+  }
+  
+/*
   $xlabel = array();
   foreach( $lines as $line ) {
     if ($line != "") {
@@ -180,15 +195,16 @@ function gfInputParseCSVLine ( $args, $input) {
     }
 	
   }
+*/
   
   $rslt = "&chd=t:" . $rslt;
   
   if (($hasxlabel)&&($hasylabel)) {
-    $rslt = $rslt . "&chxt=yx&chxl=0:|" . $min . "|" . $max . "|1:";
+    $rslt = $rslt . "&chxt=y,x&chxl=0:|" . $min . "|" . $max . "|1:";
 	foreach ($xlabel as $label) $rslt = $rslt . "|" . $label;
   }
   if (($hasxlabel)&&!($hasylabel)) {
-    $rslt = $rslt . "&chxt=yx&chxl=0:|";
+    $rslt = $rslt . "&chxt=x&chxl=0:|";
 	foreach ($xlabel as $label) $rslt = $rslt . "|" . $label;
   }
   if (!($hasxlabel)&&($hasylabel)) {
