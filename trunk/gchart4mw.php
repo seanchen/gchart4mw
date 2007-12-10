@@ -43,7 +43,9 @@ function gfArgsDebug ( $args ) {
   // and dump them, along with the user input
   foreach( $args as $name => $value )
     $attr[] = '<strong>' . htmlspecialchars( $name ) . '</strong> = ' . htmlspecialchars( $value );
-    return implode( '<br />', $attr ) . "<br />";
+  $rslt = implode( '<br />', $attr ) . "<br />";
+
+  return $rslt;
 }
 
 // -----------------------------------------------------------------------------
@@ -59,7 +61,7 @@ function gfArgsParseCommon ( $args) {
         $size = $value;
         break;
       case "title":
-        $rslt = $rslt . "&chtt=" . $value;
+        $rslt = $rslt . "&chtt=" . implode("+",explode(" ",$value));
         break;
       case "colors":
         $rslt = $rslt . "&chco=" . $value;
@@ -111,17 +113,89 @@ function gfInputParseCSVCommon ( $args,$input) {
 
 function gfInputParseCSVLine ( $args, $input) {
   // parses the input-data
-  $rslt = "";
   
-  $lines = explode ("\n",$input);
+  $fieldsep = ",";
   
-  
-  foreach( $lines as $line ) {
-    if ($minval 
-  	$rslt = $rslt . $line;
+  foreach( $args as $name => $value ) {
+    switch ($name) {
+	  case "fieldsep":
+	    $fieldsep = $value;
+		break;
+	  case "ymin":
+	    $min = $value;
+	    break;
+	  case "ymax":
+	    $max = $value;
+		break;
+	  case "xlabel":
+	    $hasxlabel=true;
+	    break;
+	  case "ylabel":
+	    $hasylabel=true;
+	    break;
+	}
   }
-
-  return "&chd=s:" . $rslt;
+  
+  $lines = explode ("\n",$input); 
+  
+  $xlabel = array();
+  foreach( $lines as $line ) {
+    if ($line != "") {
+      $data = explode ($fieldsep,$line);
+	  reset ($data);
+	  $i = 0;
+	  do {
+	    $field = current($data);
+	
+	    if ($hasxlabel) {
+	      $xlabel[] = $field;
+	      $field = next($data);
+	    }
+	    $datasets[][$i] = $field;
+  	    $i = $i + 1;
+	  }
+	  while (next($data) != false);
+    }
+  }
+  
+  foreach ($datasets as $dataset) {  
+    foreach( $dataset as $data ) {
+	  if ($data!= "") {
+	    if (($min >= $data)||($min == "")) $min = $data;
+	    if ($max <= $data) $max = $data;	
+      }
+    }
+  }
+  
+  $rslt = "";
+  foreach ($datasets as $dataset) {  
+    if ($rslt != "") $rslt = $rslt . "|";
+	
+    foreach( $dataset as $data ) {
+      if ($data = "") $value = -1;
+      $value = round(($data-$min) / ($max-$min) * 100,0);
+      if ($value > 100) $value = -1;
+      if ($rslt != "") $rslt = $rslt . ",";
+      $rslt = $rslt . $value;	
+    }
+	
+  }
+  
+  $rslt = "&chd=t:" . $rslt;
+  
+  if (($hasxlabel)&&($hasylabel)) {
+    $rslt = $rslt . "&chxt=yx&chxl=0:|" . $min . "|" . $max . "|1:";
+	foreach ($xlabel as $label) $rslt = $rslt . "|" . $label;
+  }
+  if (($hasxlabel)&&!($hasylabel)) {
+    $rslt = $rslt . "&chxt=yx&chxl=0:|";
+	foreach ($xlabel as $label) $rslt = $rslt . "|" . $label;
+  }
+  if (!($hasxlabel)&&($hasylabel)) {
+    $rslt = $rslt . "&chxt=y&chxl=0:|" . $min . "|" . $max;
+  }
+  
+  return $rslt;
 }
  
 // -----------------------------------------------------------------------------
