@@ -12,12 +12,7 @@
  
 /**
 ToDos:
-  legend - mehrere Parameter durch "|" getrennt (explode / implode)
-  colors - mehrere Parameter durch "," getrennt (explode / implode)
-  fill-typen ausprogrammieren
-  usage of labes for x-axis
-  more than 1 datarow per graph
-  
+  fill-typen ausprogrammieren 
   additional graph-types
 **/
 
@@ -37,7 +32,9 @@ $wgExtensionFunctions[] = 'gfChartSetup';
 
 function gfChartSetup() {
   global $wgParser;
-  $wgParser->setHook( 'linechart', 'gfLineRender' );
+  $wgParser->setHook( 'lines', 'gfLineRender' );
+  $wgParser->setHook( 'bars', 'gfBarsRender' );
+  $wgParser->setHook( 'pie', 'gfPieRender' );
 }
           
 // -----------------------------------------------------------------------------
@@ -72,9 +69,6 @@ function gfArgsParseCommon ( $args) {
       case "fill":
         $rslt = $rslt . "&chf=" . $value;
         break;
-      case "legend":
-        $rslt = $rslt . "&chdl=" . $value;
-        break;
     }
   }
   
@@ -84,37 +78,56 @@ function gfArgsParseCommon ( $args) {
 }
 
 function gfArgsParseLine ( $args ) {
-  // parses all additional parameters for line charts
-  
-  $rslt = "&cht=lc";
-  
+  // parses all additional parameters for line charts 
+  $rslt = "&cht=lc";  
   return $rslt;
 }
  
-function gfArgsParseScatter ( $args ) {
-  // parses all additional parameters for Scatter charts
-}
- 
-function gfArgsParseBar ( $args ) {
+function gfArgsParseBars ( $args ) {
   // parses all additional parameters for Bar charts
-}
- 
-function gfArgsParseVenn ( $args ) {
-  // parses all additional parameters for Venn charts
+  if ($args["horizontal"] != ""){
+    $rslt = "&cht=bh";
+  } else {
+    $rslt = "&cht=bv";
+  }
+  
+  if ($args["stacked"] != "") {
+    $rslt = $rslt . "s";
+  } else {
+    $rslt = $rslt . "g";
+  }
+  return $rslt;
 }
  
 function gfArgsParsePie ( $args ) {
   // parses all additional parameters for Pie charts
+  $rslt = "&cht=p";
+
+  if ($args["3d"] != "") {
+    $rslt = $rslt . "3";
+  }
+  
+  return $rslt;
 }
 
-// -----------------------------------------------------------------------------
+function gfArgsParseScatter ( $args ) {
+  // parses all additional parameters for Scatter charts
+  
+  // ToDo
+}
+ 
+function gfArgsParseVenn ( $args ) {
+  // parses all additional parameters for Venn charts
 
+  // ToDo
+}
+ 
 // -----------------------------------------------------------------------------
 function gfInputParseCSVCommon ( $args,$input) {
   // parses the common data-Settings like labels etc...
 }
 
-function gfInputParseCSVLine ( $args, $input) {
+function gfInputParseCSV ( $args, $input) {
   // parses the input-data
   
   $fieldsep = ",";
@@ -142,33 +155,66 @@ function gfInputParseCSVLine ( $args, $input) {
   $lines = explode ("\n",$input); 
   foreach($lines as $line) {
     if ($line != "") {
-      $data[] = $line;
-      if (($min >= $line) || ($min == "")) $min = $line;
-      if ($max <= $line) $max = $line;
+      $data[] = explode($fieldsep,$line);
     }
   }
   
-  foreach ($data as $field) {
-    $value = round(($field-$min) / ($max-$min) * 100,0);
-    if ($value > 100) $value = -1;
-    if ($rslt != "") $rslt = $rslt . ",";
-    $rslt = $rslt . $value;	
+  $xlabel = "";
+  if ($hasxlabel) {
+    if ($hasylabel) {
+	  $startrow = 1;
+	} else {
+	  $startrow = 0;
+	}
+    for ($i = $startrow; $i < count($data); $i++) {
+	  $xlabel = $xlabel . "|" . $data[$i][0];
+	}
+    $startcol = 1;
+  } else {
+    $startcol = 0;
+  }
+  
+  $ylabel = "";
+  if ($hasylabel) {
+    for ($i = $startcol; $i < count($data[0]); $i++) {
+	  if ($i != $startcol) $ylabel = $ylabel . "|";
+	  $ylabel = $ylabel . $data[0][$i];
+	}
+    $startrow = 1;
+  } else {
+    $startrow = 0;
+  }
+  
+  for ($i = $startcol; $i < count($data[0]); $i++) {
+    for ($j = $startrow; $j < count($data); $j++) {
+      if (($min >= $data[$j][$i]) || ($min == "")) $min = $data[$j][$i];
+      if ($max <= $data[$j][$i]) $max = $data[$j][$i];
+	}
+  }
+
+  $rslt = "";
+  for ($i = $startcol; $i < count($data[0]); $i++) {
+    if ($i != $startcol) $rslt = $rslt . "|";
+    for ($j = $startrow; $j < count($data); $j++) {
+      $value = round(($data[$j][$i]-$min) / ($max-$min) * 100,0);
+      if ($value > 100) $value = -1;
+      if ($j != $startrow) $rslt = $rslt . ",";
+      $rslt = $rslt . $value;	
+	}	
   }
   
   $rslt = "&chd=t:" . $rslt;
   
-  if (($hasxlabel)&&($hasylabel)) {
-    $rslt = $rslt . "&chxt=y,x&chxl=0:|" . $min . "|" . $max . "|1:";
-	foreach ($xlabel as $label) $rslt = $rslt . "|" . $label;
-  }
-  if (($hasxlabel)&&!($hasylabel)) {
-    $rslt = $rslt . "&chxt=x&chxl=0:|";
-	foreach ($xlabel as $label) $rslt = $rslt . "|" . $label;
-  }
-  if (!($hasxlabel)&&($hasylabel)) {
-    $rslt = $rslt . "&chxt=y&chxl=0:|" . $min . "|" . $max;
+  if ($hasxlabel) {
+    $rslt = $rslt . "&chxt=y,x&chxl=0:|" . $min . "|" . $max . "|1:" . $xlabel;
+  } else {
+    $rslt = $rslt . "&chxt=x&chxl=0:|" . $xlabel;
   }
   
+  if ($hasylabel) {
+    $rslt = $rslt . "&chdl=" . $ylabel;
+  }
+
   return $rslt;
 }
  
@@ -178,7 +224,27 @@ function gfLineRender( $input, $args, $parser ) {
   
   $retval = $retval . gfArgsParseCommon($args);
   $retval = $retval . gfArgsParseLine($args);
-  $retval = $retval . gfInputParseCSVLine($args,$input);
+  $retval = $retval . gfInputParseCSV($args,$input);
+  $retval = $retval . '">';
+  return $retval;
+}
+
+function gfBarsRender( $input, $args, $parser ) {
+  $retval = gfArgsDebug ($args);
+  
+  $retval = $retval . gfArgsParseCommon($args);
+  $retval = $retval . gfArgsParseBars($args);
+  $retval = $retval . gfInputParseCSV($args,$input);
+  $retval = $retval . '">';
+  return $retval;
+}
+
+function gfPieRender( $input, $args, $parser ) {
+  $retval = gfArgsDebug ($args);
+  
+  $retval = $retval . gfArgsParseCommon($args);
+  $retval = $retval . gfArgsParsePie($args);
+  $retval = $retval . gfInputParseCSV($args,$input);
   $retval = $retval . '">';
   return $retval;
 }
