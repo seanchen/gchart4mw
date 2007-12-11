@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Example.php
- * This extension does...
- * written by John Doe
- * http://www.johndoe.com/
+ * gchart4mw.php
+ * provide tags for drawing charts the easy way using google chart API.
+ * written by Dirk Festerling
+ * http://code.google.com/p/gchart4mw
  * To activate the functionality of this extension include the following in your
  * LocalSettings.php file:
- * require_once('$IP/extensions/Example.php');
+ * require_once('$IP/extensions/gchart4mw.php');
  */
  
 /**
@@ -15,6 +15,10 @@ ToDos:
   legend - mehrere Parameter durch "|" getrennt (explode / implode)
   colors - mehrere Parameter durch "," getrennt (explode / implode)
   fill-typen ausprogrammieren
+  usage of labes for x-axis
+  more than 1 datarow per graph
+  
+  additional graph-types
 **/
 
 if(! defined( 'MEDIAWIKI' ) ) {
@@ -39,8 +43,7 @@ function gfChartSetup() {
 // -----------------------------------------------------------------------------
 function gfArgsDebug ( $args ) {
   $attr = array();    
-  // This time, make a list of attributes and their values,
-  // and dump them, along with the user input
+  // make a list of attributes and their values and dump them, along with the user input
   foreach( $args as $name => $value )
     $attr[] = '<strong>' . htmlspecialchars( $name ) . '</strong> = ' . htmlspecialchars( $value );
   $rslt = implode( '<br />', $attr ) . "<br />";
@@ -141,7 +144,7 @@ function gfInputParseCSVLine ( $args, $input) {
     if ($line != "") {
       $data[] = $line;
       if (($min >= $line) || ($min == "")) $min = $line;
-      if ($max <= $data) $max = $line;
+      if ($max <= $line) $max = $line;
     }
   }
   
@@ -151,51 +154,6 @@ function gfInputParseCSVLine ( $args, $input) {
     if ($rslt != "") $rslt = $rslt . ",";
     $rslt = $rslt . $value;	
   }
-  
-/*
-  $xlabel = array();
-  foreach( $lines as $line ) {
-    if ($line != "") {
-      $data = explode ($fieldsep,$line);
-	  reset ($data);
-	  $i = 0;
-	  do {
-	    $field = current($data);
-	
-	    if ($hasxlabel) {
-	      $xlabel[] = $field;
-	      $field = next($data);
-	    }
-	    $datasets[][$i] = $field;
-  	    $i = $i + 1;
-	  }
-	  while (next($data) != false);
-    }
-  }
-  
-  foreach ($datasets as $dataset) {  
-    foreach( $dataset as $data ) {
-	  if ($data!= "") {
-	    if (($min >= $data)||($min == "")) $min = $data;
-	    if ($max <= $data) $max = $data;	
-      }
-    }
-  }
-  
-  $rslt = "";
-  foreach ($datasets as $dataset) {  
-    if ($rslt != "") $rslt = $rslt . "|";
-	
-    foreach( $dataset as $data ) {
-      if ($data = "") $value = -1;
-      $value = round(($data-$min) / ($max-$min) * 100,0);
-      if ($value > 100) $value = -1;
-      if ($rslt != "") $rslt = $rslt . ",";
-      $rslt = $rslt . $value;	
-    }
-	
-  }
-*/
   
   $rslt = "&chd=t:" . $rslt;
   
