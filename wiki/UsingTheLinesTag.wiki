@@ -1,4 +1,4 @@
-#step-by-step examples for using the <lines>-tag.
+#summary step-by-step examples for using the <lines>-tag.
 
 To draw lines-charts with *gchart4mw* put the data to show between {{{<lines>}}} and {{{</lines>}}} ({{{<bars>}}} and {{{<pie>}}} are also possible tags for charts). Just put one value per row:
 
