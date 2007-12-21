@@ -77,6 +77,7 @@ function gfArgsParseCommon ( $args) {
   return $rslt;
 }
 
+// -----------------------------------------------------------------------------
 function gfArgsParseLine ( $args ) {
   // parses all additional parameters for line charts 
   $rslt = "&cht=lc";  
@@ -123,14 +124,16 @@ function gfArgsParseVenn ( $args ) {
 }
  
 // -----------------------------------------------------------------------------
-function gfInputParseCSVCommon ( $args,$input) {
+function gfInputParseCSVCommon ( $args,$input ) {
   // parses the common data-Settings like labels etc...
 }
 
-function gfInputParseCSV ( $args, $input) {
+function gfInputParseCSV ( $args, $input, $type ) {
   // parses the input-data
   
   $fieldsep = ",";
+  $hasxlabel = false;
+  $hasylabel = false;
   
   foreach( $args as $name => $value ) {
     switch ($name) {
@@ -149,7 +152,7 @@ function gfInputParseCSV ( $args, $input) {
 	  case "ylabel":
 	    $hasylabel=true;
 	    break;
-	}
+		}
   }
 
   $lines = explode ("\n",$input); 
@@ -162,13 +165,14 @@ function gfInputParseCSV ( $args, $input) {
   $xlabel = "";
   if ($hasxlabel) {
     if ($hasylabel) {
-	  $startrow = 1;
-	} else {
-	  $startrow = 0;
-	}
+	  	$startrow = 1;
+		} else {
+	  	$startrow = 0;
+		}
     for ($i = $startrow; $i < count($data); $i++) {
-	  $xlabel = $xlabel . "|" . $data[$i][0];
-	}
+      if ($xlabel != "") $xlabel = $xlabel . "|";
+	  	$xlabel = $xlabel . $data[$i][0];
+		}
     $startcol = 1;
   } else {
     $startcol = 0;
@@ -177,9 +181,9 @@ function gfInputParseCSV ( $args, $input) {
   $ylabel = "";
   if ($hasylabel) {
     for ($i = $startcol; $i < count($data[0]); $i++) {
-	  if ($i != $startcol) $ylabel = $ylabel . "|";
-	  $ylabel = $ylabel . $data[0][$i];
-	}
+	  	if ($i != $startcol) $ylabel = $ylabel . "|";
+	  	$ylabel = $ylabel . $data[0][$i];
+		}
     $startrow = 1;
   } else {
     $startrow = 0;
@@ -189,10 +193,12 @@ function gfInputParseCSV ( $args, $input) {
     for ($j = $startrow; $j < count($data); $j++) {
       if (($min >= $data[$j][$i]) || ($min == "")) $min = $data[$j][$i];
       if ($max <= $data[$j][$i]) $max = $data[$j][$i];
-	}
+		}
   }
+  if ($type == "pie") $min = 0;
 
   $rslt = "";
+  
   for ($i = $startcol; $i < count($data[0]); $i++) {
     if ($i != $startcol) $rslt = $rslt . "|";
     for ($j = $startrow; $j < count($data); $j++) {
@@ -200,19 +206,24 @@ function gfInputParseCSV ( $args, $input) {
       if ($value > 100) $value = -1;
       if ($j != $startrow) $rslt = $rslt . ",";
       $rslt = $rslt . $value;	
-	}	
+		}	
   }
   
   $rslt = "&chd=t:" . $rslt;
   
-  if ($hasxlabel) {
-    $rslt = $rslt . "&chxt=y,x&chxl=0:|" . $min . "|" . $max . "|1:" . $xlabel;
+  if ($type == "pie") {
+  	if ($hasxlabel) {
+    	$rslt = $rslt . "&chl=" . $xlabel;
+    }
   } else {
-    $rslt = $rslt . "&chxt=x&chxl=0:|" . $xlabel;
-  }
-  
-  if ($hasylabel) {
-    $rslt = $rslt . "&chdl=" . $ylabel;
+  	if ($hasxlabel) {
+    	$rslt = $rslt . "&chxt=y,x&chxl=0:|" . $min . "|" . $max . "|1:|" . $xlabel;
+	  } else {
+  	  $rslt = $rslt . "&chxt=y&chxl=0:|" . $min . "|" . $max;
+	  }
+	  if ($hasylabel) {
+  	  $rslt = $rslt . "&chdl=" . $ylabel;
+	  }
   }
 
   return $rslt;
@@ -224,7 +235,7 @@ function gfLineRender( $input, $args, $parser ) {
   
   $retval = $retval . gfArgsParseCommon($args);
   $retval = $retval . gfArgsParseLine($args);
-  $retval = $retval . gfInputParseCSV($args,$input);
+  $retval = $retval . gfInputParseCSV($args,$input,"line");
   $retval = $retval . '">';
   return $retval;
 }
@@ -234,7 +245,7 @@ function gfBarsRender( $input, $args, $parser ) {
   
   $retval = $retval . gfArgsParseCommon($args);
   $retval = $retval . gfArgsParseBars($args);
-  $retval = $retval . gfInputParseCSV($args,$input);
+  $retval = $retval . gfInputParseCSV($args,$input,"bars");
   $retval = $retval . '">';
   return $retval;
 }
@@ -244,7 +255,7 @@ function gfPieRender( $input, $args, $parser ) {
   
   $retval = $retval . gfArgsParseCommon($args);
   $retval = $retval . gfArgsParsePie($args);
-  $retval = $retval . gfInputParseCSV($args,$input);
+  $retval = $retval . gfInputParseCSV($args,$input,"pie");
   $retval = $retval . '">';
   return $retval;
 }
