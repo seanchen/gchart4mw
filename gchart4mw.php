@@ -13,7 +13,6 @@
 /**
 ToDos:
   fill-typen ausprogrammieren 
-  additional graph-types
 **/
 
 if(! defined( 'MEDIAWIKI' ) ) {
@@ -30,6 +29,7 @@ if(! defined( 'MEDIAWIKI' ) ) {
 
 $wgExtensionFunctions[] = 'gfChartSetup';
 
+// -----------------------------------------------------------------------------
 function gfChartSetup() {
   global $wgParser;
   $wgParser->setHook( 'lines', 'gfLineRender' );
@@ -84,6 +84,7 @@ function gfArgsParseLine ( $args ) {
   return $rslt;
 }
  
+// -----------------------------------------------------------------------------
 function gfArgsParseBars ( $args ) {
   // parses all additional parameters for Bar charts
   if ($args["horizontal"] != ""){
@@ -100,6 +101,7 @@ function gfArgsParseBars ( $args ) {
   return $rslt;
 }
  
+// -----------------------------------------------------------------------------
 function gfArgsParsePie ( $args ) {
   // parses all additional parameters for Pie charts
   $rslt = "&cht=p";
@@ -110,24 +112,8 @@ function gfArgsParsePie ( $args ) {
   
   return $rslt;
 }
-
-function gfArgsParseScatter ( $args ) {
-  // parses all additional parameters for Scatter charts
-  
-  // ToDo
-}
- 
-function gfArgsParseVenn ( $args ) {
-  // parses all additional parameters for Venn charts
-
-  // ToDo
-}
  
 // -----------------------------------------------------------------------------
-function gfInputParseCSVCommon ( $args,$input ) {
-  // parses the common data-Settings like labels etc...
-}
-
 function gfInputParseCSV ( $args, $input, $type ) {
   // parses the input-data
   
@@ -231,8 +217,6 @@ function gfInputParseCSV ( $args, $input, $type ) {
  
 // -----------------------------------------------------------------------------
 function gfLineRender( $input, $args, $parser ) {
-  $retval = gfArgsDebug ($args);
-  
   $retval = $retval . gfArgsParseCommon($args);
   $retval = $retval . gfArgsParseLine($args);
   $retval = $retval . gfInputParseCSV($args,$input,"line");
@@ -241,8 +225,6 @@ function gfLineRender( $input, $args, $parser ) {
 }
 
 function gfBarsRender( $input, $args, $parser ) {
-  $retval = gfArgsDebug ($args);
-  
   $retval = $retval . gfArgsParseCommon($args);
   $retval = $retval . gfArgsParseBars($args);
   $retval = $retval . gfInputParseCSV($args,$input,"bars");
@@ -251,8 +233,6 @@ function gfBarsRender( $input, $args, $parser ) {
 }
 
 function gfPieRender( $input, $args, $parser ) {
-  $retval = gfArgsDebug ($args);
-  
   $retval = $retval . gfArgsParseCommon($args);
   $retval = $retval . gfArgsParsePie($args);
   $retval = $retval . gfInputParseCSV($args,$input,"pie");
