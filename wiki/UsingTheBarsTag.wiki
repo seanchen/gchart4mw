@@ -18,6 +18,8 @@ http://gchart4mw.googlecode.com/files/example7.png
 
 *Note:* _There is an autofit scaling of the Y-Axis by default. This is why you see only 2 bars - the middle value is drawn as as bar with height zero. Especially for bar-charts it is handy to set the Y-Axis manually!_ 
 
+[OnlineDocumentation back]
+
 == Setting the Y-Axis ==
 
 By default the Y-Axis gets autoscaled by finding the greatest and the smallest value of all given data. If you would like to set the Y-Axis manually you can do so by using {{{ymin}}} and {{{ymax}}} (You don´t have to use both values):
@@ -32,6 +34,7 @@ By default the Y-Axis gets autoscaled by finding the greatest and the smallest v
 
 http://gchart4mw.googlecode.com/files/example8.png
 
+[OnlineDocumentation back]
 
 == Showing multiple data-lines ==
 
@@ -59,6 +62,8 @@ If like to show the data-lines stacked rather than side by side add the {{{stack
 
 http://gchart4mw.googlecode.com/files/example10.png
 
+[OnlineDocumentation back]
+
 == Putting Labels on the X-axis ==
 
 If you add the {{{xlabel}}}-parameter to the chart, the first column of the given data is handled as labels for the X-axis:
@@ -72,6 +77,8 @@ Dec,5410,2433
 }}}
 
 http://gchart4mw.googlecode.com/files/example11.png
+
+[OnlineDocumentation back]
 
 == Adding a legend to the chart ==
 
@@ -90,6 +97,8 @@ Dec,5410,2433
 
 http://gchart4mw.googlecode.com/files/example12.png
 
+[OnlineDocumentation back]
+
 == Drawing horizontal bars ==
 
 You can add the {{{horizontal}}}-parameter to change the bar-orientation:
@@ -103,3 +112,5 @@ Dec,5410,2433
 }}}
 
 http://gchart4mw.googlecode.com/files/example13.png
+
+[OnlineDocumentation back]
