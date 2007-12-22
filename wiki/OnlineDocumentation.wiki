@@ -1,15 +1,9 @@
-#summary One-sentence summary of this page.
-
-= How to use this extension =
+#summary How to use this extension
 
 This is a XML-style extension to show charts by using the google chart API. It takes the data to show between special tags. Just put one value per row:
 
   * Look at UsingTheLinesTag to get step-by-step examples for creating line-charts with *gchart4mw*
   * UsingTheBarsTag shows how bar-charts can be done.
-
-
-
-
 
 = parameters common to all types of charts =
 
@@ -22,11 +16,10 @@ This is a XML-style extension to show charts by using the google chart API. It t
   * By default the field separator is ",". If you would like to have a different separator set it with *fieldsep*: {{{fieldsep=”;”}}}
   * You can set the chart background with the *fill*-parameter. Please see http://code.google.com/apis/chart/#chart_or_background_fill for details.
 
-== parameters for bar-charts ==
+= parameters for bar-charts =
 
   * add *horizontal* if you would like to have to bars displayed horinzontal.
   * if you show multiple data columns in a chart you can use the *stacked*-parameter to show them stacked and not side by side.
 
-== parameters for pie-charts ==
+= parameters for pie-charts =
   * use *3d* if you want to show a 3d-style pie-chart.
-	
