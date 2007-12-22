@@ -1,6 +1,6 @@
 #summary step-by-step examples for using the <pie>-tag.
 
-To draw pie-charts with *gchart4mw* put the data to show between {{{<pie>}}} and {{{</pie>}}} ({{{<lines>}}} and {{{<bars>}}} are also possible tags for charts). Just put one value per row.
+To draw pie-charts with *gchart4mw* put the data to show between {{{<pie>}}} and {{{</pie>}}} ({{{<lines>}}} and {{{<bars>}}} are also possible tags for charts). You can´t use this chart-type to draw multiple data-line in a single chart. 
 
 If you put this code in a page of your wiki
 
