@@ -5,22 +5,6 @@ This is a XML-style extension to show charts by using the google chart API. It t
 
   * Look at UsingTheLinesTag to get step-by-step examples for creating line-charts with *gchart4mw*
   * UsingTheBarsTag shows how bar-charts can be done.
+  * There is also a Wiki-Page about UsingThePieTag. 
 
-= parameters common to all types of charts =
-
-  * by default the size of the y-axis is determined by the smallest and the biggest value in the chart. if you would like to set it manually use *ymin* and *ymax*: {{{ymin=0}}}
-  * you can add a legend to the chart with the *ylabel* parameter and putting the labels in the first row of the content.
-  * if you add the *xlabel*-parameter, the first column of the content is considered as labels for the X-axis.
-  * *size* takes the size of the chart as additional parameter (Default is {{{size=200x120}}}).
-  * *title* is used to set the title of a chart (e.g. {{{title=”site visitors”}}}
-  * with *colors* you can set the color for the chart in RRGGBB-style (like _FF0000_ for red). If you have multiple data columns separate the colors with a colon.
-  * By default the field separator is ",". If you would like to have a different separator set it with *fieldsep*: {{{fieldsep=”;”}}}
-  * You can set the chart background with the *fill*-parameter. Please see http://code.google.com/apis/chart/#chart_or_background_fill for details.
-
-= parameters for bar-charts =
-
-  * add *horizontal* if you would like to have to bars displayed horinzontal.
-  * if you show multiple data columns in a chart you can use the *stacked*-parameter to show them stacked and not side by side.
-
-= parameters for pie-charts =
-  * use *3d* if you want to show a 3d-style pie-chart.
+  * PossibleParameters gives an overview of all parameters that can be passed to a chart
