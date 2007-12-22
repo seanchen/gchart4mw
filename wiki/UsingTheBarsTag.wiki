@@ -102,4 +102,4 @@ Dec,5410,2433
 </bars>
 }}}
 
-http://gchart4mw.googlecode.com/files/example12.png
+http://gchart4mw.googlecode.com/files/example13.png
