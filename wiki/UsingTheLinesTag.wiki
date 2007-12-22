@@ -16,6 +16,8 @@ you will get this chart:
 
 http://gchart4mw.googlecode.com/files/example1.png
 
+[OnlineDocumentation back]
+
 == Setting the Y-Axis ==
 
 By default the Y-Axis gets autoscaled by finding the greatest and the smallest value of all given data. If you would like to set the Y-Axis manually you can do so by using {{{ymin}}} and {{{ymax}}} (You don´t have to use both values):
@@ -29,6 +31,8 @@ By default the Y-Axis gets autoscaled by finding the greatest and the smallest v
 }}}
 
 http://gchart4mw.googlecode.com/files/example2.png
+
+[OnlineDocumentation back]
 
 == Showing multiple data-lines ==
 
@@ -56,6 +60,8 @@ To separate the data lines in a better way you can set the color of each line:
 
 http://gchart4mw.googlecode.com/files/example4.png
 
+[OnlineDocumentation back]
+
 == Putting Labels on the X-axis ==
 
 If you add the {{{xlabel}}}-parameter to the chart, the first column of the given data is handled as labels for the X-axis:
@@ -69,6 +75,8 @@ Dec,5410,2433
 }}}
 
 http://gchart4mw.googlecode.com/files/example5.png
+
+[OnlineDocumentation back]
 
 == Adding a legend to the chart ==
 
@@ -86,3 +94,5 @@ Dec,5410,2433
 *Note:* _As you see in the example, if you also have labels on the X-axis, the first column of the first row is empty!_
 
 http://gchart4mw.googlecode.com/files/example6.png
+
+[OnlineDocumentation back]
