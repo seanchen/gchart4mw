@@ -11,11 +11,17 @@
 || *fieldsep* || By default the field separator is ",". If you would like to have a different separator set it with {{{fieldsep}}}: {{{fieldsep=”;”}}} ||
 || *fill* || You can set the chart background with the {{{fill}}}-parameter. Please see http://code.google.com/apis/chart/#chart_or_background_fill for details. ||
 
+[OnlineDocumentation back]
+
 = parameters for bar-charts =
 
 || *horizontal* || add {{{horizontal}}} if you would like to have to bars displayed horinzontal. ||
 || *stacked* || if you show multiple data columns in a chart you can use the {{{stacked}}}-parameter to show them stacked and not side by side. ||
 
+[OnlineDocumentation back]
+
 = parameters for pie-charts =
 
 || *3d* || use {{{3d}}} if you want to show a 3d-style pie-chart. ||
+
+[OnlineDocumentation back]
