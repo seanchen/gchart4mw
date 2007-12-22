@@ -1,4 +1,5 @@
 #summary How to use this extension
+#labels Featured,Phase-Deploy
 
 This is a XML-style extension to show charts by using the google chart API. It takes the data to show between special tags. Just put one value per row:
 
