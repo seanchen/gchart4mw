@@ -1,7 +1,7 @@
 #summary How to use this extension
 #labels Featured,Phase-Deploy
 
-This is a XML-style extension to show charts by using the google chart API. It takes the data to show between special tags. Just put one value per row:
+This is a XML-style extension to show charts by using the google chart API. It takes the data to show between special tags in CSV-style. for a single data-line just put one value per row.
 
   * Look at UsingTheLinesTag to get step-by-step examples for creating line-charts with *gchart4mw*
   * UsingTheBarsTag shows how bar-charts can be done.
