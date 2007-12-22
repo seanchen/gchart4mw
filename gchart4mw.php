@@ -202,10 +202,19 @@ function gfInputParseCSV ( $args, $input, $type ) {
     	$rslt = $rslt . "&chl=" . $xlabel;
     }
   } else {
+    
   	if ($hasxlabel) {
-    	$rslt = $rslt . "&chxt=y,x&chxl=0:|" . $min . "|" . $max . "|1:|" . $xlabel;
+  		if ($args["horizontal"] != "") 
+  			$rslt = $rslt . "&chxt=x,y";
+  		else
+  			$rslt = $rslt . "&chxt=y,x";
+    	$rslt = $rslt . "&chxl=0:|" . $min . "|" . $max . "|1:|" . $xlabel;
 	  } else {
-  	  $rslt = $rslt . "&chxt=y&chxl=0:|" . $min . "|" . $max;
+  		if ($args["horizontal"] != "") 
+  			$rslt = $rslt . "&chxt=x";
+  		else
+  			$rslt = $rslt . "&chxt=y";
+  	  	$rslt = $rslt . "&chxl=0:|" . $min . "|" . $max;
 	  }
 	  if ($hasylabel) {
   	  $rslt = $rslt . "&chdl=" . $ylabel;
