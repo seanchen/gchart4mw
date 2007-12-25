@@ -120,6 +120,10 @@ function gfInputParseCSV ( $args, $input, $type ) {
   $fieldsep = ",";
   $hasxlabel = false;
   $hasylabel = false;
+  $haslegend = false;
+  $hasxgrid = false;
+  $hasygrid = false;
+  $ishorizontal = false;
   
   foreach( $args as $name => $value ) {
     switch ($name) {
@@ -132,13 +136,42 @@ function gfInputParseCSV ( $args, $input, $type ) {
 	  case "ymax":
 	    $max = $value;
 		break;
+	  case "ylabel":
+	    $hasylabel=true;
+	  	$ysteps = $value;
+	  	if ($ysteps == "ylabel") $ysteps = 2;
+	  	break;
 	  case "xlabel":
 	    $hasxlabel=true;
 	    break;
-	  case "ylabel":
-	    $hasylabel=true;
+	  case "legend":
+	    $haslegend=true;
 	    break;
+	  case "horizontal":
+	  	$ishorizontal=true;
+	  	break;
+	  case "grid":
+	  	switch ($value) {
+	  		case "xy":
+	  			$hasxgrid=true;
+	  			$hasygrid=true;
+	  			break;
+	  		case "yx":
+	  			$hasxgrid=true;
+	  			$hasygrid=true;
+	  			break;
+	  		case "x":
+	  			$hasxgrid=true;
+	  			$hasygrid=false;
+	  			break;
+	  		case "y":
+	  			$hasxgrid=false;
+	  			$hasygrid=true;
+	  			break;
+	  	}
+	  	break;
 		}
+	  
   }
 
   $lines = explode ("\n",$input); 
@@ -150,7 +183,7 @@ function gfInputParseCSV ( $args, $input, $type ) {
   
   $xlabel = "";
   if ($hasxlabel) {
-    if ($hasylabel) {
+    if ($haslegend) {
 	  	$startrow = 1;
 		} else {
 	  	$startrow = 0;
@@ -166,9 +199,18 @@ function gfInputParseCSV ( $args, $input, $type ) {
   
   $ylabel = "";
   if ($hasylabel) {
+    $step = ($max - $min) / $ysteps;
+  	for ($i = $min; $i <= $max; $i += $step) {
+  		if ($ylabel != "") $ylabel = $ylabel . "|";
+  		$ylabel = $ylabel . $i;
+  	}
+  }
+  
+  $legend = "";
+  if ($haslegend) {
     for ($i = $startcol; $i < count($data[0]); $i++) {
-	  	if ($i != $startcol) $ylabel = $ylabel . "|";
-	  	$ylabel = $ylabel . $data[0][$i];
+	  	if ($i != $startcol) $legend = $legend . "|";
+	  	$legend = $legend . $data[0][$i];
 		}
     $startrow = 1;
   } else {
@@ -203,22 +245,50 @@ function gfInputParseCSV ( $args, $input, $type ) {
     }
   } else {
     
-  	if ($hasxlabel) {
-  		if ($args["horizontal"] != "") 
+  	if (($hasxlabel) && ($hasylabel)) {
+  		if ($ishorizontal) 
   			$rslt = $rslt . "&chxt=x,y";
   		else
   			$rslt = $rslt . "&chxt=y,x";
-    	$rslt = $rslt . "&chxl=0:|" . $min . "|" . $max . "|1:|" . $xlabel;
-	  } else {
-  		if ($args["horizontal"] != "") 
+    	$rslt = $rslt . "&chxl=0:|" . $ylabel . "|1:|" . $xlabel;
+	}
+	if ((!$hasxlabel) && ($hasylabel)) {
+  		if ($ishorizontal) 
   			$rslt = $rslt . "&chxt=x";
   		else
   			$rslt = $rslt . "&chxt=y";
-  	  	$rslt = $rslt . "&chxl=0:|" . $min . "|" . $max;
-	  }
-	  if ($hasylabel) {
-  	  $rslt = $rslt . "&chdl=" . $ylabel;
-	  }
+  	  	$rslt = $rslt . "&chxl=0:|" . $ylabel;
+	}
+	if (($hasxlabel) && (!$hasylabel)) {
+  		if ($ishorizontal) 
+  			$rslt = $rslt . "&chxt=y";
+  		else
+  			$rslt = $rslt . "&chxt=x";
+    	$rslt = $rslt . "&chxl=0:|" . $xlabel;
+	}
+	
+	if ($haslegend) {
+  	  $rslt = $rslt . "&chdl=" . $legend;
+	}
+	
+	if (($hasxgrid) && ($hasygrid)) {
+  		if ($ishorizontal) 
+			$rslt = $rslt . "&chg=" . 100/$ysteps . ",". 100/(count($data)-1);
+		else
+			$rslt = $rslt . "&chg=" . 100/(count($data)-1) . "," . 100/$ysteps;
+	}
+	if (($hasxgrid) && (!$hasygrid)) {
+  		if ($ishorizontal) 
+			$rslt = $rslt . "&chg=0,". 100/(count($data)-1);
+		else
+			$rslt = $rslt . "&chg=" . 100/(count($data)-1) . ",0";
+	}
+	if ((!$hasxgrid) && ($hasygrid)) {
+  		if ($ishorizontal) 
+			$rslt = $rslt . "&chg=" . 100/$ysteps . ",0";		
+		else
+			$rslt = $rslt . "&chg=0," . 100/$ysteps;
+	}
   }
 
   return $rslt;
@@ -226,6 +296,7 @@ function gfInputParseCSV ( $args, $input, $type ) {
  
 // -----------------------------------------------------------------------------
 function gfLineRender( $input, $args, $parser ) {
+  $retval = "";
   $retval = $retval . gfArgsParseCommon($args);
   $retval = $retval . gfArgsParseLine($args);
   $retval = $retval . gfInputParseCSV($args,$input,"line");
@@ -234,6 +305,7 @@ function gfLineRender( $input, $args, $parser ) {
 }
 
 function gfBarsRender( $input, $args, $parser ) {
+  $retval = "";
   $retval = $retval . gfArgsParseCommon($args);
   $retval = $retval . gfArgsParseBars($args);
   $retval = $retval . gfInputParseCSV($args,$input,"bars");
@@ -242,6 +314,7 @@ function gfBarsRender( $input, $args, $parser ) {
 }
 
 function gfPieRender( $input, $args, $parser ) {
+  $retval = "";
   $retval = $retval . gfArgsParseCommon($args);
   $retval = $retval . gfArgsParsePie($args);
   $retval = $retval . gfInputParseCSV($args,$input,"pie");
