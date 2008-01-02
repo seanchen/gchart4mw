@@ -197,15 +197,6 @@ function gfInputParseCSV ( $args, $input, $type ) {
     $startcol = 0;
   }
   
-  $ylabel = "";
-  if ($hasylabel) {
-    $step = ($max - $min) / $ysteps;
-  	for ($i = $min; $i <= $max; $i += $step) {
-  		if ($ylabel != "") $ylabel = $ylabel . "|";
-  		$ylabel = $ylabel . $i;
-  	}
-  }
-  
   $legend = "";
   if ($haslegend) {
     for ($i = $startcol; $i < count($data[0]); $i++) {
@@ -225,6 +216,15 @@ function gfInputParseCSV ( $args, $input, $type ) {
   }
   if ($type == "pie") $min = 0;
 
+  $ylabel = "";
+  if ($hasylabel) {
+    $step = ($max - $min) / $ysteps;
+  	for ($i = $min; $i <= $max; $i += $step) {
+  		if ($ylabel != "") $ylabel = $ylabel . "|";
+  		$ylabel = $ylabel . $i;
+  	}
+  }
+  
   $rslt = "";
   
   for ($i = $startcol; $i < count($data[0]); $i++) {
@@ -243,8 +243,7 @@ function gfInputParseCSV ( $args, $input, $type ) {
   	if ($hasxlabel) {
     	$rslt = $rslt . "&chl=" . $xlabel;
     }
-  } else {
-    
+  } else {    
   	if (($hasxlabel) && ($hasylabel)) {
   		if ($ishorizontal) 
   			$rslt = $rslt . "&chxt=x,y";
