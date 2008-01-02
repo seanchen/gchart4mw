@@ -7,13 +7,15 @@
  * http://code.google.com/p/gchart4mw
  * To activate the functionality of this extension include the following in your
  * LocalSettings.php file:
- * require_once('$IP/extensions/gchart4mw.php');
+ *
+ * $gchartWikiDefaults = Array ( "size" => "200x120" );
+ * $gchartLinesDefaults = Array ( "grid" => "xy", "ymin" => "0", "ylabel" => "4");
+ * $gchartBarsDefaults = Array ( "grid" => "y", "ymin" => "0", "ylabel" => "4" );
+ * $gchartPieDefaults = Array ( "3d" => "3d" );
+ * require_once( "$IP/extensions/gchart4mw/gchart4mw.php" );
  */
- 
-/**
-ToDos:
-  fill-typen ausprogrammieren 
-**/
+
+error_reporting (E_ALL);
 
 if(! defined( 'MEDIAWIKI' ) ) {
   echo( "This is an extension to the MediaWiki package and cannot be run standalone.\n" );
@@ -32,11 +34,29 @@ $wgExtensionFunctions[] = 'gfChartSetup';
 // -----------------------------------------------------------------------------
 function gfChartSetup() {
   global $wgParser;
-  $wgParser->setHook( 'lines', 'gfLineRender' );
+  $wgParser->setHook( 'lines', 'gfLinesRender' );
   $wgParser->setHook( 'bars', 'gfBarsRender' );
   $wgParser->setHook( 'pie', 'gfPieRender' );
 }
           
+// -----------------------------------------------------------------------------
+$fieldsep = ",";
+$hasxlabel = false;
+$hasylabel = false;
+$haslegend = false;
+$hasxgrid = false;
+$hasygrid = false;
+$ishorizontal = false;
+$size = "200x120";
+$title = "";
+$colors = "";
+$fill = "";
+$isstacked = false;
+$is3d = false;
+$min = 4294967296;
+$max = -1;
+$ysteps = 2;
+  
 // -----------------------------------------------------------------------------
 function gfArgsDebug ( $args ) {
   $attr = array();    
@@ -49,11 +69,25 @@ function gfArgsDebug ( $args ) {
 }
 
 // -----------------------------------------------------------------------------
-function gfArgsParseCommon ( $args) {
-  // parses all the parameters common to all types of charts
-  $rslt = '<img src="http://chart.apis.google.com/chart?t';
-  
-  $size="200x120";
+function gfArgsParseCommon ( $args ) {
+
+	global $fieldsep;
+	global $hasxlabel;
+	global $hasylabel;
+	global $haslegend;
+	global $hasxgrid;
+	global $hasygrid;
+	global $ishorizontal;
+	global $size;
+	global $title;
+	global $colors;
+	global $fill;
+	global $isstacked;
+	global $is3d;
+	global $min;
+    global $max;
+    global $ysteps;
+
   
   foreach( $args as $name => $value ) {
     switch ($name) {
@@ -61,96 +95,44 @@ function gfArgsParseCommon ( $args) {
         $size = $value;
         break;
       case "title":
-        $rslt = $rslt . "&chtt=" . implode("+",explode(" ",$value));
+        $title = "&chtt=" . implode("+",explode(" ",$value));
         break;
       case "colors":
-        $rslt = $rslt . "&chco=" . $value;
+        $colors = "&chco=" . $value;
         break;
       case "fill":
-        $rslt = $rslt . "&chf=" . $value;
+        $fill = "&chf=" . $value;
         break;
-    }
-  }
-  
-  $rslt = $rslt . "&chs=" . $size;
-  
-  return $rslt;
-}
-
-// -----------------------------------------------------------------------------
-function gfArgsParseLine ( $args ) {
-  // parses all additional parameters for line charts 
-  $rslt = "&cht=lc";  
-  return $rslt;
-}
- 
-// -----------------------------------------------------------------------------
-function gfArgsParseBars ( $args ) {
-  // parses all additional parameters for Bar charts
-  if ($args["horizontal"] != ""){
-    $rslt = "&cht=bh";
-  } else {
-    $rslt = "&cht=bv";
-  }
-  
-  if ($args["stacked"] != "") {
-    $rslt = $rslt . "s";
-  } else {
-    $rslt = $rslt . "g";
-  }
-  return $rslt;
-}
- 
-// -----------------------------------------------------------------------------
-function gfArgsParsePie ( $args ) {
-  // parses all additional parameters for Pie charts
-  $rslt = "&cht=p";
-
-  if ($args["3d"] != "") {
-    $rslt = $rslt . "3";
-  }
-  
-  return $rslt;
-}
- 
-// -----------------------------------------------------------------------------
-function gfInputParseCSV ( $args, $input, $type ) {
-  // parses the input-data
-  
-  $fieldsep = ",";
-  $hasxlabel = false;
-  $hasylabel = false;
-  $haslegend = false;
-  $hasxgrid = false;
-  $hasygrid = false;
-  $ishorizontal = false;
-  
-  foreach( $args as $name => $value ) {
-    switch ($name) {
-	  case "fieldsep":
-	    $fieldsep = $value;
-		break;
-	  case "ymin":
-	    $min = $value;
-	    break;
-	  case "ymax":
-	    $max = $value;
-		break;
-	  case "ylabel":
-	    $hasylabel=true;
-	  	$ysteps = $value;
-	  	if ($ysteps == "ylabel") $ysteps = 2;
-	  	break;
-	  case "xlabel":
-	    $hasxlabel=true;
-	    break;
-	  case "legend":
-	    $haslegend=true;
-	    break;
-	  case "horizontal":
-	  	$ishorizontal=true;
-	  	break;
-	  case "grid":
+	case "fieldsep":
+	  $fieldsep = $value;
+	  break;
+	case "ymin":
+	  $min = $value;
+	  break;
+	case "ymax":
+	  $max = $value;
+	  break;
+	case "ylabel":
+	  $hasylabel=true;
+	  $ysteps = $value;
+	  if ($ysteps == "ylabel") $ysteps = 2;
+	  break;
+	case "xlabel":
+	  $hasxlabel=true;
+	  break;
+	case "legend":
+	  $haslegend=true;
+	  break;
+	case "horizontal":
+	  $ishorizontal=true;
+	  break;
+	case "stacked":
+	  $isstacked=true;
+	  break;
+	case "3d":
+	  $is3d=true;
+	  break;
+	case "grid":
 	  	switch ($value) {
 	  		case "xy":
 	  			$hasxgrid=true;
@@ -170,10 +152,96 @@ function gfInputParseCSV ( $args, $input, $type ) {
 	  			break;
 	  	}
 	  	break;
-		}
-	  
+    }
   }
+}
 
+// -----------------------------------------------------------------------------
+function gfArgsRenderCommon () {
+  // parses all the parameters common to all types of charts
+
+	global $size;
+	global $title;
+	global $colors;
+	global $fill;
+
+  $rslt = '<img src="http://chart.apis.google.com/chart?chs=' . $size;
+  if ($title <> "") {
+  	$rslt = $rslt . $title;
+  }
+  if ($colors <> "") {
+	$rslt = $rslt . $colors;
+  }
+  if ($fill <> "") {
+	$rslt = $rslt . $fill;
+  }
+  return $rslt;
+}
+
+// -----------------------------------------------------------------------------
+function gfArgsRenderLine () {
+  // parses all additional parameters for line charts 
+  $rslt = "&cht=lc";  
+  return $rslt;
+}
+
+// -----------------------------------------------------------------------------
+function gfArgsRenderBars () {
+  // parses all additional parameters for Bar charts
+
+	global $ishorizontal;
+	global $isstacked;
+
+  if ($ishorizontal){
+    $rslt = "&cht=bh";
+  } else {
+    $rslt = "&cht=bv";
+  }
+  
+  if ($isstacked) {
+    $rslt = $rslt . "s";
+  } else {
+    $rslt = $rslt . "g";
+  }
+  return $rslt;
+}
+ 
+// -----------------------------------------------------------------------------
+function gfArgsParsePie () {
+  // parses all additional parameters for Pie charts
+
+	global $is3d;
+
+  $rslt = "&cht=p";
+
+  if ($is3d) {
+    $rslt = $rslt . "3";
+  }
+  
+  return $rslt;
+}
+
+// -----------------------------------------------------------------------------
+function gfInputParseCSV ( $input, $type ) {
+  // parses the input-data
+
+	global $fieldsep;
+	global $hasxlabel;
+	global $hasylabel;
+	global $haslegend;
+	global $hasxgrid;
+	global $hasygrid;
+	global $ishorizontal;
+	global $size;
+	global $title;
+	global $colors;
+	global $fill;
+	global $isstacked;
+	global $is3d;
+	global $min;
+    global $max;
+    global $ysteps;
+  
   $lines = explode ("\n",$input); 
   foreach($lines as $line) {
     if ($line != "") {
@@ -294,29 +362,50 @@ function gfInputParseCSV ( $args, $input, $type ) {
 }
  
 // -----------------------------------------------------------------------------
-function gfLineRender( $input, $args, $parser ) {
+function gfLinesRender( $input, $args, $parser ) {
+  global $gchartWikiDefaults;
+  global $gchartLinesDefaults;
+
+  gfArgsParseCommon ($gchartWikiDefaults);
+  gfArgsParseCommon ($gchartLinesDefaults);
+  gfArgsParseCommon ($args);
+
   $retval = "";
-  $retval = $retval . gfArgsParseCommon($args);
-  $retval = $retval . gfArgsParseLine($args);
-  $retval = $retval . gfInputParseCSV($args,$input,"line");
+  $retval = $retval . gfArgsRenderCommon();
+  $retval = $retval . gfArgsRenderLine();
+  $retval = $retval . gfInputParseCSV($input,"line");
   $retval = $retval . '">';
   return $retval;
 }
 
 function gfBarsRender( $input, $args, $parser ) {
+  global $gchartWikiDefaults;
+  global $gchartBarsDefaults;
+
+  gfArgsParseCommon ($gchartWikiDefaults);
+  gfArgsParseCommon ($gchartBarsDefaults);
+  gfArgsParseCommon ($args);
+
   $retval = "";
-  $retval = $retval . gfArgsParseCommon($args);
-  $retval = $retval . gfArgsParseBars($args);
-  $retval = $retval . gfInputParseCSV($args,$input,"bars");
+  $retval = $retval . gfArgsRenderCommon();
+  $retval = $retval . gfArgsRenderBars();
+  $retval = $retval . gfInputParseCSV($input,"bars");
   $retval = $retval . '">';
   return $retval;
 }
 
 function gfPieRender( $input, $args, $parser ) {
+  global $gchartWikiDefaults;
+  global $gchartPieDefaults;
+
+  gfArgsParseCommon ($gchartWikiDefaults);
+  gfArgsParseCommon ($gchartPieDefaults);
+  gfArgsParseCommon ($args);
+
   $retval = "";
-  $retval = $retval . gfArgsParseCommon($args);
-  $retval = $retval . gfArgsParsePie($args);
-  $retval = $retval . gfInputParseCSV($args,$input,"pie");
+  $retval = $retval . gfArgsRenderCommon();
+  $retval = $retval . gfArgsRenderPie();
+  $retval = $retval . gfInputParseCSV($input,"pie");
   $retval = $retval . '">';
   return $retval;
 }
