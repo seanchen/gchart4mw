@@ -14,7 +14,7 @@ If you put this code in a page of your wiki
 
 you will get this chart:
 
-http://gchart4mw.googlecode.com/files/example1.png
+http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&cht=lc&chd=t:43,0,100
 
 [OnlineDocumentation back]
 
@@ -30,7 +30,7 @@ By default the Y-Axis gets autoscaled by finding the greatest and the smallest v
 </lines>
 }}}
 
-http://gchart4mw.googlecode.com/files/example2.png
+http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&cht=lc&chd=t:67,43,98
 
 [OnlineDocumentation back]
 
@@ -46,7 +46,7 @@ You can show multiple data lines in a chart if you put multiple values separated
 </lines>
 }}}
 
-http://gchart4mw.googlecode.com/files/example3.png
+http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&cht=lc&chd=t:51,32,68|15,11,30
 
 To separate the data lines in a better way you can set the color of each line:
 
@@ -58,7 +58,23 @@ To separate the data lines in a better way you can set the color of each line:
 </lines>
 }}}
 
-http://gchart4mw.googlecode.com/files/example4.png
+http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=lc&chd=t:51,32,68|15,11,30
+
+[OnlineDocumentation back]
+
+== Putting Labels on the Y-axis ==
+
+To get an idea about the value of each data-point, put labels on the Y-axis. This puts 4 labels on the Y-axis:
+
+{{{
+<lines title="Site Visitors" ymin=0 ymax=8000 colors=FF0000,00FF00 ylabel=4>
+4115,1230
+2541,911
+5410,2433
+</lines>
+}}}
+
+http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=lc&chd=t:51,32,68|15,11,30&chxt=y&chxl=0:|0|2000|4000|6000|8000
 
 [OnlineDocumentation back]
 
@@ -67,23 +83,23 @@ http://gchart4mw.googlecode.com/files/example4.png
 If you add the {{{xlabel}}}-parameter to the chart, the first column of the given data is handled as labels for the X-axis:
 
 {{{
-<lines title="Site Visitors" ymin=0 ymax=8000 colors=FF0000,00FF00 xlabel>
+<lines title="Site Visitors" ymin=0 ymax=8000 colors=FF0000,00FF00 ylabel=4 xlabel>
 Oct,4115,1230
 Nov,2541,911
 Dec,5410,2433
 </lines>
 }}}
 
-http://gchart4mw.googlecode.com/files/example5.png
+http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=lc&chd=t:51,32,68|15,11,30&chxt=y,x&chxl=0:|0|2000|4000|6000|8000|1:|Oct|Nov|Dec
 
 [OnlineDocumentation back]
 
 == Adding a legend to the chart ==
 
-Especially for charts with multiple data lines you should add a legend to it. This can be done with the {{{ylabel}}}-parameter and putting the labels for the legend in the first row of the content.
+Especially for charts with multiple data lines you should add a legend to it. This can be done with the {{{legend}}}-parameter and putting the labels for the legend in the first row of the content.
 
 {{{
-<lines title="Site Visitors" ymin=0 ymax=8000 colors=FF0000,00FF00 xlabel ylabel>
+<lines title="Site Visitors" ymin=0 ymax=8000 colors=FF0000,00FF00 ylabel=4 xlabel legend>
    ,EU,US
 Oct,4115,1230
 Nov,2541,911
@@ -93,6 +109,23 @@ Dec,5410,2433
 
 *Note:* _As you see in the example, if you also have labels on the X-axis, the first column of the first row is empty!_
 
-http://gchart4mw.googlecode.com/files/example6.png
+http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=lc&chd=t:51,32,68|15,11,30&chxt=y,x&chxl=0:|0|2000|4000|6000|8000|1:|Oct|Nov|Dec&chdl=EU|US
+
+[OnlineDocumentation back]
+
+== Putting a grid under the chart ==
+
+It is easier to compare values if you put a grid under the chart. You can put lines for one axis only or for both X- and Y-axis:
+
+{{{
+<lines title="Site Visitors" ymin=0 ymax=8000 colors=FF0000,00FF00 ylabel=4 xlabel legend grid=xy>
+   ,EU,US
+Oct,4115,1230
+Nov,2541,911
+Dec,5410,2433
+</lines>
+}}}
+
+http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=lc&chd=t:51,32,68|15,11,30&chxt=y,x&chxl=0:|0|2000|4000|6000|8000|1:|Oct|Nov|Dec&chdl=EU|US&chg=50,25
 
 [OnlineDocumentation back]

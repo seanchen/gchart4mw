@@ -1,10 +1,41 @@
 #summary How to use this extension
 #labels Featured,Phase-Deploy
 
-This is a XML-style extension to show charts by using the google chart API. It takes the data to show between special tags in CSV-style. for a single data-line just put one value per row.
+*gchart4mw* is a mediawiki-extension for visualizing data in wiki pages. To do so it provides a couple of additional tags for embedding different chart-types. Possible charts are
+  * lines
+  * bars
+  * and pie-charts
 
-  * Look at UsingTheLinesTag to get step-by-step examples for creating line-charts with *gchart4mw*
+The charts are drawn by using the Google Chart API. 
+
+All data for visualization is provided in CSV-style.
+
+There are a number of PossibleParameters to adjust the look of the charts. Togive all of your charts a consistent look use DefaultParameters.
+  
+= Example of usage =
+
+This example shows the result of 2005«s election for the german Bundestag:
+
+{{{
+<pie 3d title="Bundestagswahl 2005" size=300x150 xlabel>
+SPD,34.2
+CDU,27.8
+CSU,7.4
+GR†NE,8.1
+FDP,9.8
+Die Linke.,8.7
+Sonstige,3.9
+</pie>
+}}}
+
+http://chart.apis.google.com/chart?chs=300x150&chtt=Bundestagswahl+2005&cht=p3&chd=t:100,81,22,24,29,25,11&chl=SPD|CDU|CSU|GR†NE|FDP|Die%20Linke.|Sonstige
+
+There are some more detailed step-by-step examples at
+  * UsingTheLinesTag for creating line-charts
   * UsingTheBarsTag shows how bar-charts can be done.
-  * There is also a Wiki-Page about UsingThePieTag. 
+  * UsingThePieTag gives examples for pie-charts. 
 
-  * PossibleParameters gives an overview of all parameters that can be passed to a chart
+= Installation =
+The installation of this extension is done by 2 easy steps:
+  * drop the php-file in the extension-folder of your mediawiki-installation.
+  * add {{{require_once('$IP/extensions/gchart4mw.php');}}} to your _!LocalSettings.php_.
