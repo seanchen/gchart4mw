@@ -16,21 +16,21 @@ To give all of your charts a consistent look use DefaultParameters.
   
 = Example of usage =
 
-This example shows the result of 2005«s election for the german Bundestag:
+This example shows the result of 2005Â´s election for the german Bundestag:
 
 {{{
 <pie 3d title="Bundestagswahl 2005" size=300x150 xlabel>
 SPD,34.2
 CDU,27.8
 CSU,7.4
-GR†NE,8.1
+GRÃœNE,8.1
 FDP,9.8
 Die Linke.,8.7
 Sonstige,3.9
 </pie>
 }}}
 
-http://chart.apis.google.com/chart?chs=300x150&chtt=Bundestagswahl+2005&cht=p3&chd=t:100,81,22,24,29,25,11&chl=SPD|CDU|CSU|GR†NE|FDP|Die%20Linke.|Sonstige
+http://chart.apis.google.com/chart?chs=300x150&chtt=Bundestagswahl+2005&cht=p3&chd=t:100,81,22,24,29,25,11&chl=SPD|CDU|CSU|GRÃœNE|FDP|Die%20Linke.|Sonstige
 
 There are some more detailed step-by-step examples at
   * UsingTheLinesTag for creating line-charts
