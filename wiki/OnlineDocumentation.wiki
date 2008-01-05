@@ -2,9 +2,10 @@
 #labels Featured,Phase-Deploy
 
 *gchart4mw* is a mediawiki-extension for visualizing data in wiki pages. To do so it provides a couple of additional tags for embedding different chart-types. Possible charts are
-  * lines
-  * bars
-  * and pie-charts
+  * lines (look at UsingTheLinesTag for step-by-step examples)
+  * bars (UsingTheBarsTag)
+  * and pie-charts (UsingThePieTag)
+
 
 The charts are drawn by using the Google Chart API. 
 
@@ -31,11 +32,6 @@ Sonstige,3.9
 }}}
 
 http://gchart4mw.googlecode.com/files/chart.png
-
-There are some more detailed step-by-step examples at
-  * UsingTheLinesTag for creating line-charts
-  * UsingTheBarsTag shows how bar-charts can be done.
-  * UsingThePieTag gives examples for pie-charts. 
 
 = Installation =
 The installation of this extension is done by 2 easy steps:
