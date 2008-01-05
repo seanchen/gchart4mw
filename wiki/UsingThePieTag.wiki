@@ -14,7 +14,7 @@ If you put this code in a page of your wiki
 
 you will get this chart:
 
-http://chart.apis.google.com/chart?chs=400x120&chtt=Site+Visitors&cht=p&chd=t:68,44,100
+http://gchart4mw.googlecode.com/files/pie-step01.png
 
 [OnlineDocumentation back]
 
@@ -30,7 +30,7 @@ Dec,7843
 </pie>
 }}}
 
-http://chart.apis.google.com/chart?chs=400x120&chtt=Site+Visitors&cht=p&chd=t:68,44,100&chl=Oct|Nov|Dec
+http://gchart4mw.googlecode.com/files/pie-step02.png
 
 You can use the {{{colors}}}-parameter to set colors for the slices (If there are less colors given than data values the colors will be interpolated).
 
@@ -42,7 +42,7 @@ Dec,7843
 </pie>
 }}}
 
-http://chart.apis.google.com/chart?chs=400x120&chtt=Site+Visitors&chco=FF0000,00FF00,0000FF&cht=p&chd=t:68,44,100&chl=Oct|Nov|Dec
+http://gchart4mw.googlecode.com/files/pie-step03.png
 
 [OnlineDocumentation back]
 
@@ -58,6 +58,6 @@ Dec,7843
 </pie>
 }}}
 
-http://chart.apis.google.com/chart?chs=400x120&chtt=Site+Visitors&chco=FF0000,00FF00,0000FF&cht=p3&chd=t:68,44,100&chl=Oct|Nov|Dec
+http://gchart4mw.googlecode.com/files/pie-step04.png
 
 [OnlineDocumentation back]

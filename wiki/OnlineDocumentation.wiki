@@ -30,7 +30,7 @@ Sonstige,3.9
 </pie>
 }}}
 
-http://chart.apis.google.com/chart?chs=300x150&chtt=Bundestagswahl+2005&cht=p3&chd=t:100,81,22,24,29,25,11&chl=SPD|CDU|CSU|GRÜNE|FDP|Die%20Linke.|Sonstige
+http://gchart4mw.googlecode.com/files/chart.png
 
 There are some more detailed step-by-step examples at
   * UsingTheLinesTag for creating line-charts

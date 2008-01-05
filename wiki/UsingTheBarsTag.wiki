@@ -14,7 +14,7 @@ If you put this code in a page of your wiki
 
 you will get this chart:
 
-http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&cht=bvg&chd=t:43,0,100
+http://gchart4mw.googlecode.com/files/bars-step01.png
 
 *Note:* _There is an autofit scaling of the Y-Axis by default. This is why you see only 2 bars - the middle value is drawn as as bar with height zero. Especially for bar-charts it is handy to set the Y-Axis manually!_ 
 
@@ -32,7 +32,7 @@ By default the Y-Axis gets autoscaled by finding the greatest and the smallest v
 </bars>
 }}}
 
-http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&cht=bvg&chd=t:67,43,98
+http://gchart4mw.googlecode.com/files/bars-step02.png
 
 [OnlineDocumentation back]
 
@@ -48,7 +48,7 @@ You can show multiple data lines in a chart if you put multiple values separated
 </bars>
 }}}
 
-http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=bvg&chd=t:51,32,68|15,11,30
+http://gchart4mw.googlecode.com/files/bars-step03.png
 
 If like to show the data-lines stacked rather than side by side add the {{{stacked}}}-parameter:
 
@@ -60,7 +60,7 @@ If like to show the data-lines stacked rather than side by side add the {{{stack
 </bars>
 }}}
 
-http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=bvs&chd=t:51,32,68|15,11,30
+http://gchart4mw.googlecode.com/files/bars-step04.png
 
 [OnlineDocumentation back]
 
@@ -76,7 +76,7 @@ Dec,5410,2433
 </bars>
 }}}
 
-http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=bvs&chd=t:51,32,68|15,11,30&chxt=y&chxl=0:|0|2000|4000|6000|8000
+http://gchart4mw.googlecode.com/files/bars-step05.png
 
 [OnlineDocumentation back]
 
@@ -92,7 +92,7 @@ Dec,5410,2433
 </bars>
 }}}
 
-http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=bvs&chd=t:51,32,68|15,11,30&chxt=y,x&chxl=0:|0|2000|4000|6000|8000|1:|Oct|Nov|Dec
+http://gchart4mw.googlecode.com/files/bars-step06.png
 
 [OnlineDocumentation back]
 
@@ -102,16 +102,16 @@ Especially for charts with multiple data lines you should add a legend to it. Th
 
 {{{
 <bars title="Site Visitors" ymin=0 ymax=8000 colors=FF0000,00FF00 stacked ylabel=4 xlabel legend>
-   ,EU,US
+   ,EU  ,US
 Oct,4115,1230
-Nov,2541,911
+Nov,2541, 911
 Dec,5410,2433
 </bars>
 }}}
 
 *Note:* _As you see in the example, if you also have labels on the X-axis, the first column of the first row is empty!_
 
-http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=bvs&chd=t:51,32,68|15,11,30&chxt=y,x&chxl=0:|0|2000|4000|6000|8000|1:|Oct|Nov|Dec&chdl=EU|US
+http://gchart4mw.googlecode.com/files/bars-step07.png
 
 [OnlineDocumentation back]
 
@@ -120,14 +120,14 @@ http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00
 You can add the {{{horizontal}}}-parameter to change the bar-orientation:
 {{{
 <bars title="Site Visitors" ymin=0 ymax=8000 colors=FF0000,00FF00 stacked ylabel=4 xlabel legend horizontal>
-   ,EU,US
+   ,EU  ,US
 Oct,4115,1230
-Nov,2541,911
+Nov,2541, 911
 Dec,5410,2433
 </bars>
 }}}
 
-http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=bhs&chd=t:51,32,68|15,11,30&chxt=x,y&chxl=0:|0|2000|4000|6000|8000|1:|Oct|Nov|Dec&chdl=EU|US
+http://gchart4mw.googlecode.com/files/bars-step08.png
 
 *Note:* _By using {{{horizontal}}} the whole chart is flipped by 90 degrees, so the {{{ylabel}}} puts labels on the X-axis in fact!_
 
@@ -139,11 +139,14 @@ It is easier to compare values if you put a grid under the chart. You can put li
 
 {{{
 <bars title="Site Visitors" ymin=0 ymax=8000 colors=FF0000,00FF00 stacked ylabel=4 xlabel legend horizontal grid=y>
-   ,EU,US
+   ,EU  ,US
 Oct,4115,1230
-Nov,2541,911
+Nov,2541, 911
 Dec,5410,2433
 </bars>
 }}}
 
-http://chart.apis.google.com/chart?chs=200x120&chtt=Site+Visitors&chco=FF0000,00FF00&cht=bhs&chd=t:51,32,68|15,11,30&chxt=x,y&chxl=0:|0|2000|4000|6000|8000|1:|Oct|Nov|Dec&chdl=EU|US&chg=25,0
+http://gchart4mw.googlecode.com/files/bars-step09.png
+
+[OnlineDocumentation back]
+
