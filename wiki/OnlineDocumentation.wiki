@@ -10,7 +10,9 @@ The charts are drawn by using the Google Chart API.
 
 All data for visualization is provided in CSV-style.
 
-There are a number of PossibleParameters to adjust the look of the charts. Togive all of your charts a consistent look use DefaultParameters.
+There are a number of PossibleParameters to adjust the look of the charts. 
+
+To give all of your charts a consistent look use DefaultParameters.
   
 = Example of usage =
 
