@@ -387,15 +387,15 @@ function gfInputParseCSV ( $input, $type ) {
   
   if (($hasxgrid) && ($hasygrid)) {
       if ($ishorizontal) 
-      $rslt = $rslt . "&chg=" . 100/$ysteps . ",". 100/(count($data)-2);
+      $rslt = $rslt . "&chg=" . 100/$ysteps . ",". 100/(count($data)-1);
     else
-      $rslt = $rslt . "&chg=" . 100/(count($data)-2) . "," . 100/$ysteps;
+      $rslt = $rslt . "&chg=" . 100/(count($data)-1) . "," . 100/$ysteps;
   }
   if (($hasxgrid) && (!$hasygrid)) {
       if ($ishorizontal) 
-      $rslt = $rslt . "&chg=0,". 100/(count($data)-2);
+      $rslt = $rslt . "&chg=0,". 100/(count($data)-1);
     else
-      $rslt = $rslt . "&chg=" . 100/(count($data)-2) . ",0";
+      $rslt = $rslt . "&chg=" . 100/(count($data)-1) . ",0";
   }
   if ((!$hasxgrid) && ($hasygrid)) {
       if ($ishorizontal) 
