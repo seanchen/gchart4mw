@@ -21,13 +21,13 @@ This example shows the result of 2005´s election for the german Bundestag:
 
 {{{
 <pie 3d title="Bundestagswahl 2005" size=300x150 xlabel>
-SPD,34.2
-CDU,27.8
-CSU,7.4
-GRÜNE,8.1
-FDP,9.8
-Die Linke.,8.7
-Sonstige,3.9
+SPD,       34.2
+CDU,       27.8
+CSU,        7.4
+GRÜNE,      8.1
+FDP,        9.8
+Die Linke., 8.7
+Sonstige,   3.9
 </pie>
 }}}
 
